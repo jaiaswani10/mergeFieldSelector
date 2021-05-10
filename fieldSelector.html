@@ -1,0 +1,134 @@
+<template>
+    <lightning-layout multiple-rows vertical-align="center">
+        <lightning-layout-item>
+            <label class="slds-form-element__label" for="text-input-id-1" style="padding-top: 8px;">Select a
+                field</label>
+        </lightning-layout-item>
+        <lightning-layout-item>
+            <div class="slds-form-element" style="display: flex;">
+                <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon_right">
+                    <button class="slds-button slds-button_icon slds-input__icon slds-input__icon_right" title="Copy"
+                        onclick={copyToClipboard}>
+                        <lightning-icon icon-name="utility:copy" alternative-text="copy" title="copy" size="xx-small">
+                        </lightning-icon>
+                    </button>
+                    <input type="text" id="text-input-id-1" class="slds-input" onclick={openModal}
+                        value={mergeFieldString} autocomplete="off" />
+                </div>
+            </div>
+        </lightning-layout-item>
+    </lightning-layout>
+
+
+    <div>
+        <section role="dialog" tabindex="-1" class={className} aria-labelledby="modal-heading-01" aria-modal="true"
+            aria-describedby="modal-content-id-1">
+            <div class="slds-modal__container fldsel-modal__container">
+                <header class="slds-modal__header">
+                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+                        onclick={closeModal} title="Close">
+                        <lightning-icon icon-name="utility:close" alternative-text="Close" title="Close">
+                        </lightning-icon>
+                        <span class="slds-assistive-text">Close</span>
+                    </button>
+                    <h2 id="modal-heading-01" class="slds-modal__title slds-hyphenate">Select a Field</h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                    <lightning-layout multiple-rows vertical-align="center">
+                        <lightning-layout-item>
+                            <span class="rootNodeName">{startObjName}</span>
+                        </lightning-layout-item>
+                        <lightning-layout-item>
+                            <lightning-icon icon-name="utility:right" alternative-text="Close" title="Close"
+                                size="xx-small">
+                            </lightning-icon>
+                        </lightning-layout-item>
+                        <template if:true={dynamicCmpCreationStates}>
+                            <template for:each={dynamicCmpCreationStates} for:item="item">
+                                <lightning-layout-item key={item.uniqueid}>
+                                    <template if:true={item.selector}>
+                                        <c-autocomplete-combobox list-of-data={item.dataList}
+                                            clone-list-of-data={item.dataList} component-no={item.uniqueid}
+                                            onselected={setValue}>
+                                            <template if:true={item.righArrow}>
+                                                <span slot="appendRightArrow">
+                                                    <lightning-icon icon-name="utility:right" alternative-text="Close"
+                                                        title="Closes" size="xx-small">
+                                                    </lightning-icon>
+                                                </span>
+                                            </template>
+                                        </c-autocomplete-combobox>
+                                    </template>
+                                    <template if:true={item.label}>
+                                        <lightning-layout-item>
+                                            <a class="label" href="javascript:void(0);"
+                                                data-field-info={item.selectedFieldInfoStr} onclick={openSelector}>
+                                                <span>{item.selectedFieldInfo.label}</span>
+                                                <!-- <span class="assistiveText">Change the Business Phone record field.</span> -->
+                                            </a>
+                                        </lightning-layout-item>
+                                        <template if:true={item.rightArrow}>
+                                            <lightning-layout-item>
+                                                <lightning-icon icon-name="utility:right" alternative-text="Close"
+                                                    title="Close" size="x-small">
+                                                </lightning-icon>
+                                            </lightning-layout-item>
+                                        </template>
+                                    </template>
+                                </lightning-layout-item>
+                            </template>
+                            <template if:false={dynamicCmpCreationStates}>
+                                <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+                            </template>
+                        </template>
+                    </lightning-layout>
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <template if:true={selectedField.visible}>
+                        <lightning-layout multiple-rows horizontal-align="center">
+                            <lightning-layout-item>
+                                <span>You have selected the following field:</span>
+                                <br />
+                            </lightning-layout-item>
+                        </lightning-layout>
+                        <lightning-layout multiple-rows vertical-align="center" horizontal-align="center">
+                            <lightning-layout-item>
+                                <div class="referenceDetailContent">
+                                    <lightning-layout>
+                                        <lightning-layout-item padding="horizontal-medium">
+                                            <div class="referenceIcon"></div>
+                                        </lightning-layout-item>
+                                        <lightning-layout-item padding="horizontal-medium">
+                                            <div class="selectedText">
+                                                <span title={selectedField.title}>{selectedField.title}</span>
+                                                <br />
+                                                <span title={selectedField.dataType}>Type:
+                                                    {selectedField.dataType}</span>
+                                                <br />
+                                                <span title={selectedField.api}>API Name: {selectedField.api}</span>
+                                            </div>
+                                        </lightning-layout-item>
+                                    </lightning-layout>
+                                </div>
+                            </lightning-layout-item>
+                        </lightning-layout>
+                    </template>
+                </div>
+                <footer class="slds-modal__footer">
+                    <button class="slds-button slds-button_neutral" onclick={closeModal}>Cancel</button>
+                    <template if:false={selectedField.visible}>
+                        <button class="slds-button slds-button_brand" disabled>Choose</button>
+                    </template>
+                    <template if:true={selectedField.visible}>
+                        <button class="slds-button slds-button_brand" onclick={getMergeSyntax}>Choose</button>
+                    </template>
+                </footer>
+            </div>
+        </section>
+        <div class={openBackDrop}></div>
+    </div>
+</template>

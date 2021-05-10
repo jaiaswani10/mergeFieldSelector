@@ -1,0 +1,47 @@
+.slds-modal__content {
+    min-height: 50%;    
+}
+.fldsel-modal__container{
+    width: 50%;    
+    margin: 0 auto;    
+    min-width: 20rem;
+    max-width: none;
+}
+
+.label {    
+    color: rgb(0, 112, 210);
+    font-size: .875rem;
+    text-decoration: none;
+    outline-offset: -4px;
+    display: inline-block;
+}
+
+a:hover {
+    text-decoration: none !important;
+}
+
+.assistiveText {
+    position: absolute!important;
+    height: 1px;
+    width: 1px;
+    overflow: hidden;
+    clip: rect(1px,1px,1px,1px);
+}
+
+.referenceDetailContent {
+    margin-top: 1.5rem;
+    padding: 1rem;
+    border: 1px solid rgb(217, 219, 221);
+}
+.referenceIcon {
+    display: inline-block;
+    height: 50px;
+    width: 50px;
+    border-radius: 5px;
+    border: 1px solid rgb(0, 112, 210);
+    background-color: rgb(0, 112, 210);
+    background-size: 46px;
+    background-repeat: no-repeat;
+    background-position: 2px 2px;
+    background-image: url(/projRes/ui-process-builder-components/processuirule/img/actions/folder.png);
+}
